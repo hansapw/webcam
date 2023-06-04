@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simple Cam</title>
+
+<style>
+
+#simplevideo {
+	width: 100%;
+	height: 100%;
+	background-color: #666;
+	-webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+</style> 
+
+</head>
+ 
+<body>
+
+<div id="container">
+	<video autoplay="true" id="simplevideo">
+	
+	</video>
+</div>
+<script>
+
+</script>
+</body>
+</html>
+
+<script>
+
+var cam1;
+var str;
+ 
+navigator.mediaDevices.enumerateDevices()
+.then(function(devices) {
+  devices.forEach(function(device) {
+  str=device.label;
+  
+  var res = str.toLowerCase();
+  console.log (str);
+  if (str=='HD Web Camera'){
+  //if (str.includes('Epoc')) {
+  
+  //document.getElementById("kameraid").innerHTML=device.deviceId;
+  cam1=device.deviceId;
+  console.log (cam1);
+  }
+    console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+  });
+})
+.catch(function(err) {
+  console.log(err.name + ": " + err.message);
+});
+
+setTimeout(usbwebcam, 1000);
+
+function usbwebcam(){
+var video = document.querySelector("#simplevideo");
+
+if (navigator.mediaDevices.getUserMedia) {
+//cam1=document.getElementById("kameraid").innerHTML;
+console.log (cam1);
+  navigator.mediaDevices.getUserMedia({ video:  { deviceId: cam1 } })
+  //navigator.mediaDevices.getUserMedia({ video:  { deviceId: 'ab5e4c1946679f600820a48fa3a2c036d65cb3947d4254ea1c1cd87f500e7749' } })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+}
+</script>
